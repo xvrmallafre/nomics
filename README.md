@@ -7,7 +7,7 @@ The node.js module for the [nomics.com][] API.
 Install
 -------
 
-    npm install --save mikunimaru/nomics.git
+    npm install --save xvrmallafre/nomics.git
 
 Usage
 -----
