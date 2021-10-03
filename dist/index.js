@@ -11,12 +11,12 @@ if (https === undefined) {
     // @ts-ignore
     var https = require("https");
     var agentOptions = {
-        host: 'api.nomics.com/v1',
+        host: 'api.nomics.com',
         port: '443',
-        path: '/',
+        path: '/v1',
         rejectUnathorized: false
     };
-    var agent = new https.Agent(agentOptions);
+    var agent = https.Agent(agentOptions);
 }
 var nomicsNode_1 = require("./nomicsNode");
 Object.defineProperty(exports, "NomicsNode", { enumerable: true, get: function () { return nomicsNode_1.NomicsNode; } });
