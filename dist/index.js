@@ -1,12 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NomicsNode = void 0;
 if (fetch === undefined) {
     // tslint:disable
     // @ts-ignore
     var fetch = require("node-fetch");
 }
+if (https === undefined) {
+    // tslint:disable
+    // @ts-ignore
+    var https = require("https");
+    var agentOptions = {
+        host: 'api.nomics.com/v1',
+        port: '443',
+        path: '/',
+        rejectUnathorized: false
+    };
+    var agent = new https.Agent(agentOptions);
+}
 var nomicsNode_1 = require("./nomicsNode");
-exports.NomicsNode = nomicsNode_1.NomicsNode;
+Object.defineProperty(exports, "NomicsNode", { enumerable: true, get: function () { return nomicsNode_1.NomicsNode; } });
 // tslint:enable
 class Nomics {
     constructor({ apiKey }) {
@@ -260,7 +273,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            const response = await fetch(`https://api.nomics.com/v1/exchange-rates/interval?key=${this.apiKey}${start}${end}`);
+            const response = await fetch(`https://api.nomics.com/v1/exchange-rates/interval?key=${this.apiKey}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -274,7 +289,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            const response = await fetch(`https://api.nomics.com/v1/exchange-rates/history?key=${this.apiKey}${cur}${start}${end}`);
+            const response = await fetch(`https://api.nomics.com/v1/exchange-rates/history?key=${this.apiKey}${cur}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -288,7 +305,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            const response = await fetch(`https://api.nomics.com/v1/exchange-markets/interval?key=${this.apiKey}${start}${end}`);
+            const response = await fetch(`https://api.nomics.com/v1/exchange-markets/interval?key=${this.apiKey}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -305,7 +324,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            const response = await fetch(`https://api.nomics.com/v1/exchange_candles?key=${this.apiKey}${itv}${ex}${mkt}${start}${end}`);
+            const response = await fetch(`https://api.nomics.com/v1/exchange_candles?key=${this.apiKey}${itv}${ex}${mkt}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -321,7 +342,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            const response = await fetch(`https://api.nomics.com/v1/candles?key=${this.apiKey}${itv}${cur}${start}${end}`);
+            const response = await fetch(`https://api.nomics.com/v1/candles?key=${this.apiKey}${itv}${cur}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -331,7 +354,9 @@ class Nomics {
     }
     async getDashboardV1() {
         try {
-            const response = await fetch(`https://api.nomics.com/v1/dashboard?key=${this.apiKey}`);
+            const response = await fetch(`https://api.nomics.com/v1/dashboard?key=${this.apiKey}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -344,7 +369,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            const response = await fetch(`https://api.nomics.com/v1/market-cap/history?key=${this.apiKey}${start}${end}`);
+            const response = await fetch(`https://api.nomics.com/v1/market-cap/history?key=${this.apiKey}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -361,7 +388,9 @@ class Nomics {
             : "";
         const start = `&start=${startISOString}`;
         try {
-            const response = await fetch(`https://api.nomics.com/v1/exchange-markets/interval?key=${this.apiKey}${cu}${ex}${start}${end}`);
+            const response = await fetch(`https://api.nomics.com/v1/exchange-markets/interval?key=${this.apiKey}${cu}${ex}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -375,7 +404,9 @@ class Nomics {
         const ex = exchange ? `&exchange= ${exchange}`
             : "";
         try {
-            const response = await fetch(`https://api.nomics.com/v1/exchange-markets/prices?key=${this.apiKey}${cr}${ex}`);
+            const response = await fetch(`https://api.nomics.com/v1/exchange-markets/prices?key=${this.apiKey}${cr}${ex}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -393,7 +424,9 @@ class Nomics {
         try {
             const response = await fetch(
             // tslint:disable-next-line:max-line-length
-            `https://api.nomics.com/v1/markets/interval?key=${this.apiKey}&currency=${nomicsCurrencyID}${h}${start}${end}`);
+            `https://api.nomics.com/v1/markets/interval?key=${this.apiKey}&currency=${nomicsCurrencyID}${h}${start}${end}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -409,7 +442,9 @@ class Nomics {
         const qt = quote ? `&quote=${quote.join(",")}`
             : "";
         try {
-            return (await fetch(`https://api.nomics.com/v1/markets?key=${this.apiKey}${ex}${bs}${qt}`)).json();
+            return (await fetch(`https://api.nomics.com/v1/markets?key=${this.apiKey}${ex}${bs}${qt}`, {
+                agent: agent
+            })).json();
         }
         catch (err) {
             console.error("getMarketsV1 failed");
@@ -420,7 +455,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            return (await fetch(`https://api.nomics.com/v1/supplies/interval?key=${this.apiKey}&start=${startISOString}${end}`))
+            return (await fetch(`https://api.nomics.com/v1/supplies/interval?key=${this.apiKey}&start=${startISOString}${end}`, {
+                agent: agent
+            }))
                 .json();
         }
         catch (err) {
@@ -430,7 +467,9 @@ class Nomics {
     }
     async getAllTimeHighsV1() {
         try {
-            const response = await fetch(`https://api.nomics.com/v1/currencies/highs?key=${this.apiKey}`);
+            const response = await fetch(`https://api.nomics.com/v1/currencies/highs?key=${this.apiKey}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -440,7 +479,9 @@ class Nomics {
     }
     async getMarketPricesV1({ nomicsCurrencyID }) {
         try {
-            const response = await fetch(`https://api.nomics.com/v1/markets/prices?key=${this.apiKey}&currency=${nomicsCurrencyID}`);
+            const response = await fetch(`https://api.nomics.com/v1/markets/prices?key=${this.apiKey}&currency=${nomicsCurrencyID}`, {
+                agent: agent
+            });
             return response.json();
         }
         catch (err) {
@@ -450,7 +491,9 @@ class Nomics {
     }
     async getPricesV1() {
         try {
-            return await (await fetch(`https://api.nomics.com/v1/prices?key=${this.apiKey}`)).json();
+            return await (await fetch(`https://api.nomics.com/v1/prices?key=${this.apiKey}`, {
+                agent: agent
+            })).json();
         }
         catch (err) {
             console.error("getPricesV1 failed");
@@ -459,7 +502,9 @@ class Nomics {
     }
     async getCurrenciesV1() {
         try {
-            return (await fetch(`https://api.nomics.com/v1/currencies?key=${this.apiKey}`)).json();
+            return (await fetch(`https://api.nomics.com/v1/currencies?key=${this.apiKey}`, {
+                agent: agent
+            })).json();
         }
         catch (err) {
             console.error("getCurrenciesV1 failed");
@@ -468,7 +513,9 @@ class Nomics {
     }
     async getExchangeRatesV1() {
         try {
-            return (await fetch(`https://api.nomics.com/v1/exchange-rates?key=${this.apiKey}`)).json();
+            return (await fetch(`https://api.nomics.com/v1/exchange-rates?key=${this.apiKey}`, {
+                agent: agent
+            })).json();
         }
         catch (err) {
             console.error("getExchangeRatesV1 failed");
@@ -479,7 +526,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            return (await fetch(`https://api.nomics.com/v1/currencies/interval?key=${this.apiKey}&start=${startISOString}${end}`))
+            return (await fetch(`https://api.nomics.com/v1/currencies/interval?key=${this.apiKey}&start=${startISOString}${end}`, {
+                agent: agent
+            }))
                 .json();
         }
         catch (err) {
@@ -491,7 +540,9 @@ class Nomics {
         const end = endISOString ? `&end=${endISOString}`
             : "";
         try {
-            return (await fetch(`https://api.nomics.com/v1/currencies/sparkline?key=${this.apiKey}&start=${startISOString}${end}`))
+            return (await fetch(`https://api.nomics.com/v1/currencies/sparkline?key=${this.apiKey}&start=${startISOString}${end}`, {
+                agent: agent
+            }))
                 .json();
         }
         catch (err) {

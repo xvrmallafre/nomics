@@ -4,6 +4,19 @@ if (fetch === undefined) {
   var fetch = require("node-fetch");
 }
 
+if (https === undefined) {
+  // tslint:disable
+  // @ts-ignore
+  var https = require("https");
+  var agentOptions = {
+    host: 'api.nomics.com/v1',
+    port: '443',
+    path: '/',
+    rejectUnathorized: false
+  }
+  var agent = new https.Agent(agentOptions);
+}
+
 export {NomicsNode} from "./nomicsNode";
 // tslint:enable
 export default class Nomics {
@@ -321,7 +334,7 @@ export default class Nomics {
     try {
     const response = await fetch(
     `https://api.nomics.com/v1/exchange-rates/interval?key=${this.apiKey}${start}${end}`,{
-      agent: null
+      agent: agent
     });
     return response.json();
     } catch (err) {
@@ -341,7 +354,7 @@ export default class Nomics {
     try {
     const response = await fetch(
     `https://api.nomics.com/v1/exchange-rates/history?key=${this.apiKey}${cur}${start}${end}`,{
-      agent: null
+      agent: agent
     });
     return response.json();
     } catch (err) {
@@ -362,7 +375,7 @@ export default class Nomics {
     try {
       const response = await fetch(
         `https://api.nomics.com/v1/exchange-markets/interval?key=${this.apiKey}${start}${end}`,{
-          agent: null
+          agent: agent
         });
       return response.json();
     } catch (err) {
@@ -387,7 +400,7 @@ export default class Nomics {
     try {
     const response = await fetch(
     `https://api.nomics.com/v1/exchange_candles?key=${this.apiKey}${itv}${ex}${mkt}${start}${end}`,{
-      agent: null
+      agent: agent
     });
     return response.json();
     } catch (err) {
@@ -411,7 +424,7 @@ export default class Nomics {
     try {
       const response = await fetch(
         `https://api.nomics.com/v1/candles?key=${this.apiKey}${itv}${cur}${start}${end}`,{
-          agent: null
+          agent: agent
         });
       return response.json();
     } catch (err) {
@@ -423,7 +436,7 @@ export default class Nomics {
   private async getDashboardV1(): Promise<NomicsDashboard[]> {
     try {
       const response = await fetch(`https://api.nomics.com/v1/dashboard?key=${this.apiKey}`,{
-        agent: null
+        agent: agent
       });
       return response.json();
     } catch (err) {
@@ -442,7 +455,7 @@ export default class Nomics {
     try {
       const response = await fetch(
         `https://api.nomics.com/v1/market-cap/history?key=${this.apiKey}${start}${end}`,{
-          agent: null
+          agent: agent
         });
       return response.json();
     } catch (err) {
@@ -466,7 +479,7 @@ export default class Nomics {
     try {
       const response = await fetch(
         `https://api.nomics.com/v1/exchange-markets/interval?key=${this.apiKey}${cu}${ex}${start}${end}`,{
-          agent: null
+          agent: agent
         });
       return response.json();
     } catch (err) {
@@ -486,7 +499,7 @@ export default class Nomics {
     try {
       const response = await fetch(
         `https://api.nomics.com/v1/exchange-markets/prices?key=${this.apiKey}${cr}${ex}`,{
-          agent: null
+          agent: agent
         });
       return response.json();
     } catch (err) {
@@ -509,7 +522,7 @@ export default class Nomics {
         const response = await fetch(
           // tslint:disable-next-line:max-line-length
           `https://api.nomics.com/v1/markets/interval?key=${this.apiKey}&currency=${nomicsCurrencyID}${h}${start}${end}`,{
-            agent: null
+            agent: agent
           });
         return response.json();
       } catch (err) {
@@ -530,7 +543,7 @@ export default class Nomics {
 
     try {
       return (await fetch(`https://api.nomics.com/v1/markets?key=${this.apiKey}${ex}${bs}${qt}`,{
-        agent: null
+        agent: agent
       })).json();
     } catch (err) {
       console.error("getMarketsV1 failed");
@@ -546,7 +559,7 @@ export default class Nomics {
     try {
       return (await fetch(
         `https://api.nomics.com/v1/supplies/interval?key=${this.apiKey}&start=${startISOString}${end}`,{
-          agent: null
+          agent: agent
         }))
         .json();
     } catch (err) {
@@ -558,7 +571,7 @@ export default class Nomics {
   private async getAllTimeHighsV1(): Promise<NomicsAllTimeHighs[]> {
     try {
       const response = await fetch(`https://api.nomics.com/v1/currencies/highs?key=${this.apiKey}`,{
-        agent: null
+        agent: agent
       });
       return response.json();
     } catch (err) {
@@ -572,7 +585,7 @@ export default class Nomics {
     try {
       const response = await fetch(
         `https://api.nomics.com/v1/markets/prices?key=${this.apiKey}&currency=${nomicsCurrencyID}`,{
-          agent: null
+          agent: agent
         });
       return response.json();
     } catch (err) {
@@ -584,7 +597,7 @@ export default class Nomics {
   private async getPricesV1(): Promise<Array<{ currency: string, price: string }>> {
     try {
       return await (await fetch(`https://api.nomics.com/v1/prices?key=${this.apiKey}`,{
-        agent: null
+        agent: agent
       })).json();
     } catch (err) {
       console.error("getPricesV1 failed");
@@ -595,7 +608,7 @@ export default class Nomics {
   private async getCurrenciesV1(): Promise<Array<{id: string}>>  {
     try {
       return (await fetch(`https://api.nomics.com/v1/currencies?key=${this.apiKey}`,{
-        agent: null
+        agent: agent
       })).json();
     } catch (err) {
       console.error("getCurrenciesV1 failed");
@@ -606,7 +619,7 @@ export default class Nomics {
   private async getExchangeRatesV1(): Promise<Array<{currency: string, rate: string, timestamp: string}>> {
     try {
       return (await fetch(`https://api.nomics.com/v1/exchange-rates?key=${this.apiKey}`,{
-        agent: null
+        agent: agent
       })).json();
     } catch (err) {
       console.error("getExchangeRatesV1 failed");
@@ -623,7 +636,7 @@ export default class Nomics {
     try {
       return (await fetch(
         `https://api.nomics.com/v1/currencies/interval?key=${this.apiKey}&start=${startISOString}${end}`,{
-          agent: null
+          agent: agent
         }))
         .json();
     } catch (err) {
@@ -640,7 +653,7 @@ export default class Nomics {
     try {
       return (await fetch(
         `https://api.nomics.com/v1/currencies/sparkline?key=${this.apiKey}&start=${startISOString}${end}`,{
-          agent: null
+          agent: agent
         }))
         .json();
     } catch (err) {

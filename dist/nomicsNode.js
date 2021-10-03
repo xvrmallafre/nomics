@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NomicsNode = void 0;
 const index_1 = __importDefault(require("./index"));
 /**
  * This class converts the data retrieved by the API
@@ -45,7 +46,7 @@ class NomicsNode {
             const currencyName = /^[_A-Za-z]/.test(currentValue.currency)
                 ? currentValue.currency
                 : "_" + currentValue.currency;
-            return Object.assign({}, previousValue, { [currencyName]: Number(currentValue.price) });
+            return Object.assign(Object.assign({}, previousValue), { [currencyName]: Number(currentValue.price) });
             // @ts-ignore
         }, {});
         return pricesObject;
@@ -72,7 +73,7 @@ class NomicsNode {
         const ratesArray = await this.api.exchangeRates();
         // @ts-ignore
         const ratesObject = ratesArray.reduce((previousValue, currentValue) => {
-            return Object.assign({}, previousValue, { [currentValue.currency]: {
+            return Object.assign(Object.assign({}, previousValue), { [currentValue.currency]: {
                     currency: currentValue.currency,
                     rate: Number(currentValue.rate),
                     timestamp: currentValue.timestamp,
@@ -92,9 +93,9 @@ class NomicsNode {
                 const value = ["currency", "highTimestamp", "highExchange", "highQuoteCurrency"].includes(cValue[0])
                     ? cValue[1]
                     : Number(cValue[1]);
-                return Object.assign({}, pValue, { [cValue[0]]: value });
+                return Object.assign(Object.assign({}, pValue), { [cValue[0]]: value });
             }, {});
-            return Object.assign({}, previousValue, { [currencyName]: numberObj });
+            return Object.assign(Object.assign({}, previousValue), { [currencyName]: numberObj });
             // @ts-ignore
         }, {});
         return dashboardObject;
@@ -126,9 +127,9 @@ class NomicsNode {
                 const value = ["currency", "open_timestamp", "close_timestamp"].includes(cValue[0])
                     ? cValue[1]
                     : Number(cValue[1]);
-                return Object.assign({}, pValue, { [cValue[0]]: value });
+                return Object.assign(Object.assign({}, pValue), { [cValue[0]]: value });
             }, {});
-            return Object.assign({}, previousValue, { [currencyName]: numberObj });
+            return Object.assign(Object.assign({}, previousValue), { [currencyName]: numberObj });
             // @ts-ignore
         }, {});
         return currenciesIntervalObject;
