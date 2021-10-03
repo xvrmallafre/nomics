@@ -12,7 +12,7 @@ if (https === undefined) {
     host: 'api.nomics.com',
     port: '443',
     path: '/v1',
-    rejectUnathorized: false
+    rejectUnauthorized: false
   }
   var agent = https.Agent(agentOptions);
 }
