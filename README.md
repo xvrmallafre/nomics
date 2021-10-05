@@ -1,7 +1,7 @@
 nomics
 =======
 The node.js module for the [nomics.com][] API.
-This repository is a fork of [mikunimaru/nomics]:https://github.com/mikunimaru/nomics
+This repository is a fork of [mikunimaru/nomics](https://github.com/mikunimaru/nomics)
 
 Basically, there was an issue with the nomics certificate, so this repo solves that.
 
